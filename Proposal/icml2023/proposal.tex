@@ -136,6 +136,14 @@ This project aims to provide 1. a basic method to optimistically initialize the 
 %at the time of submission.
 \medskip
 \section{Background}
+As an exploration method in RL, \textbf{optimistic initialization} is often used in diverse set of tasks due to its high scalability.
+Depending on the task, however, the methods for giving this optimism changes slightly.
+One obvious method is to naively set the initial values to an arbitrary constant for all the states.
+This method is known to work well in the tabular RL tasks, but it is not guaranteed that it works in other situtations such as function approximation.
+Particularly for function approximation, it is almost unable to set the optimism naively without knowing the upper bound of return signals.
+To avoid this, Mochado et al (2015) proposed a method to normalize and shift down the reward signals.
+This technique allows us to determine an upper bound on any tasks, and helps us to naively initialize the function parameters.
+However, the method only assumed the linear function approximator, and not yet tested on DRL algorithms.
 
 
 \section{Research Question}
