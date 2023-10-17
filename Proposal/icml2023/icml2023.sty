@@ -473,10 +473,6 @@ the offending package(s), or layout-changing commands and try again.
     \mbox{\bf #1}\,\@for\theaffil:=#2\do{\@pa{\theaffil}} \addtofullauthorlist{#1}%
    \else
     \ifdefined\@icmlfirsttime
-    \else
-      \gdef\@icmlfirsttime{1}
-      \mbox{\bf Anonymous Authors}\@pa{@anon} \addtofullauthorlist{Anonymous Authors}
-     \fi
     \fi
 }
 
@@ -535,11 +531,11 @@ the offending package(s), or layout-changing commands and try again.
 {\bf AUTHORERR: Missing \textbackslash{}icmlaffiliation.}
 \fi
 }.
-\ifdefined\icmlcorrespondingauthor@text
-Correspondence to: \icmlcorrespondingauthor@text.
-\else
-{\bf AUTHORERR: Missing \textbackslash{}icmlcorrespondingauthor.}
-\fi
+%\\ifdefined\icmlcorrespondingauthor@text
+%\Correspondence to: \icmlcorrespondingauthor@text.
+%\\else
+%\{\bf AUTHORERR: Missing \textbackslash{}icmlcorrespondingauthor.}
+%\\fi
 
 \ \\
 \Notice@String

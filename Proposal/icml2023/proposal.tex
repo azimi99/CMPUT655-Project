@@ -81,7 +81,7 @@
 \icmlauthor{Alireza Azimi}{equal, dept}
 \icmlauthor{Haruto Tanaka}{equal, dept}
 \icmlauthor{Henry Du}{equal, dept}
-\icmlauthor{Mashfique Zaman}{equal, dept}
+\icmlauthor{Mashfiq Shahriar Zaman}{equal, dept}
 %\icmlauthor{}{sch}
 %\icmlauthor{}{sch}
 %\icmlauthor{}{sch}
@@ -113,21 +113,12 @@
 \printAffiliationsAndNotice{\icmlEqualContribution} % otherwise use the standard text.
 
 \begin{abstract}
-Optimistic initialization of value functions is a popular approach to exploration
-in tabular reinforcement learning. However, it is rarely analyzed
-in deep reinforcement learning. We explore this problem through a parameterized
-value function using linear neural networks and compare our results to an existing popular 
-learning algorithm.
+Optimistic initialization of value functions \citep{Ando2007} is a popular approach to exploration in tabular reinforcement learning. However, deep reinforcement learning seldom undergoes thorough analysis. In this study, we investigate the aforementioned issue by employing a parametrized value function that utilizes linear neural networks. Furthermore, we conduct a comparative analysis between our findings and those obtained from a widely adopted learning methodology.
 \end{abstract}
 
 \section{Introduction}
-Tradeoff between exploration and exploitation, is an eternal problem that any RL algorithms face.
-Since this challenge arises everywhere and impacts the overall performance of algorithm, various methods to balance the exploration/exploitation has been proposed.
-Among those approaches, one of the most fundamental and flexible approach is an optimistic initialization of the value functions.
-By simply setting the initial values greater than the reward maxima, one can enforce the agents to explore every state(-action) pair at least once at the early stage.
-Despite of its simplicity, the effect of optimistic initialization is significant, especially on the tabular cases.
-Although this simple technique is proven to provide the tremendous advantages in tabular context, its effect on deep nonlinear function approximation is yet to be discovered.
-This project aims to provide 1. a basic method to optimistically initialize the deep network, 2. simple fix on the implementation so that optimistic values remain effective after few gradient steps and 3. empirical analysis.
+The persistent challenge of balancing exploration and exploitation is a fundamental challenge encountered by each reinforcement learning algorithm. Since this challenge arises everywhere and impacts the overall performance of algorithms, various methods to balance exploration or exploitation have been proposed. Among those approaches, one of the most fundamental and flexible is an optimistic initialization of the value functions. By simply setting the initial values greater than the reward maxima, one can force the agents to explore every state(-action) pair at least once at the early stage. The impact of optimistic initialization is noteworthy, particularly in scenarios involving tabular data, despite its straightforward nature. Although this simple technique is proven to provide tremendous advantages in a tabular context, its effect on deep nonlinear function approximation is yet to be discovered. This project aims to provide 1. a basic method to optimistically initialize the deep network; 2. a simple fix on the implementation so that optimistic values remain effective after a few gradient steps; and 3. empirical analysis.
+
 
 % \subsection{Submitting Papers}
 
@@ -139,25 +130,18 @@ This project aims to provide 1. a basic method to optimistically initialize the 
 
 
 \section{Research Question}
-In this paper we strive to answer the following 3 part question,
-Can a parameterized value function using a neural network be optimistically intialized using reward signal shift and normalization?
-How will the removal of the bias term from the neural network affect optimistic initialization?
-In a value estimation experiment how will this initialization compare to it's tabular counterpart using 
-SARSA and semi-gradient SARSA with the same reward signal shift?
+This study aims to address the following three-part question:
+Can a parameterized value function using a neural network be optimistically initialized using reward signal shift and normalization? How will the removal of the bias term from the neural network affect optimistic initialization? In a value estimation experiment, how will this initialization compare to it's tabular counterpart using SARSA and semi-gradient SARSA with the same reward signal shift?
+
+
+
 \section{Experimental Design}
-We will be considering the minigrid library to run our experiments in three stationary environments. For the purposes of this paper, we will be focusing on the stationary environments
-Crossingenv, Distshiftenv and Lavagapenv.\\
+In this research, we will utilize the minigrid library \citep{Ando2005} to conduct our experiments in three stationary environments Crossingenv, Distshiftenv, and Lavagapenv.\\
 The value estimation algorithm in our tabular setting is SARSA and for the parameterized setting we will be using
-semi-gradient SARSA, using an $\epsilon$-greedy behavior policy.\\
-The mingrid library API provides a discrete action space, along with encoding states in an image format for the 
-parameterized setting and a coordinate format for the tabular setting.\\
-We will perform SARSA using an epsilon-greedy policy to estimate the state-action value functions using the agent coordinates while initializing the state-action 
-values optimistically. We will extend this idea to the parameterized case by adjusting the weights of the neural
-network so that it outputs an optimistic value for all state-action values. We will repeat the parameterized
-setting experiment by removing the bias term from the neural network and re-adjusting and performing the experiments accordingly.
-Comparing the results should give us better insight into the process of initializing paramaterized value functions, it's effect on 
-expected return and the siginificance of the bias term in performance.\\
-Furthermore, the mentioned environments were selected to due having simpler environment dynamics and a smaller state-space, making our experiment computationally less expensive.
+semi-gradient SARSA \citep{Ando2008}, using an $\epsilon$-greedy behavior \citep{Ando2006} policy.\\
+The API of the minigrid library offers a discrete action space, which is supported by the encoding of states in an image format for the parameterized setting and in a coordinate format for the tabular configuration.\\
+We will perform SARSA using an $\epsilon$-greedy policy to estimate the state-action value functions using the agent coordinates while initializing the state-action values optimistically. The concept will be expanded to the parameterized scenario by modifying the neural network's weights in such a way that it produces an optimistic result for all state-action values. The parameterized setting experiment will be replicated by eliminating the bias term from the neural network. Subsequently, the experiments will be readjusted and conducted accordingly. By doing a comparative analysis of the outcomes, we can acquire a more comprehensive understanding of the procedure involved in initializing parameterized value functions, its impact on the predicted return, and the significance of the bias term in relation to performance.\\
+In addition, the aforementioned environments were chosen based on their simpler dynamics and smaller state-space, which contributes to reducing the computing cost of our experiment.
 
 
 % Acknowledgements should only appear in the accepted version.
@@ -165,15 +149,15 @@ Furthermore, the mentioned environments were selected to due having simpler envi
 \textbf{Alireza Azimi:}\\
 \textbf{Haruto Tanaka:}\\
 \textbf{Henry Du:}\\
-\textbf{Mashfique Zaman:}\\
+\textbf{Mashfiq Shahriar Zaman:}\\
 
-\section{References}
-To be added later.
+% \section{References}
+% To be added later.
 % In the unusual situation where you want a paper to appear in the
 % references without citing it in the main text, use \nocite
-\nocite{langley00}
+\nocite{Ando2005, Ando2006, Ando2007, Ando2008}
 
-\bibliography{example_paper}
+\bibliography{custom}
 \bibliographystyle{icml2023}
 
 \end{document}
