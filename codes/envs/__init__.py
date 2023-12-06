@@ -1,1 +1,1 @@
-from .envs import make_env
+from .envs import make_env, produce_all_observations

@@ -3,6 +3,7 @@ import copy
 import os
 import time
 
+from matplotlib import pyplot as plt
 import numpy as np
 import torch
 from torch import nn, optim
@@ -72,6 +73,7 @@ def run_single_config(config, save_dir):
         is_done = False
         st_time = time.time()
         prev_count = timestep_count
+        r = 0
         while not is_done:
             # Step environment
             nxt_obs, reward, term, trunc, _ = env.step(action)
@@ -81,6 +83,9 @@ def run_single_config(config, save_dir):
 
             # Update flag for the termination
             is_done = term or trunc
+            r += reward
+            if term:
+                print(reward)
 
             nxt_action = None
             with torch.no_grad():

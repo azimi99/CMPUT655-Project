@@ -14,6 +14,7 @@ from .custom_minigrid_wrappers import (
     NegativeRewardOnLava
 )
 
+
 def make_env(
     env_name: str,
     flat_obs: bool = True,
