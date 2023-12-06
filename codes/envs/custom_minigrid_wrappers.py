@@ -31,8 +31,6 @@ class CustomMinigridEnv(Env):
     ):
         return self.base_env.reset(seed=seed, options=options)
 
-        
-
     def step(self, action):
         self.adjust_direction(action)
         return self.base_env.step(self.forward)

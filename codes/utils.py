@@ -1,3 +1,5 @@
+from collections import namedtuple
+import json
 import os
 import random
 
@@ -26,3 +28,12 @@ def seed_everything(seed: int = 42):
     torch.backends.cudnn.benchmark = False
 
 
+def read_config(path):
+    with open(path, 'r') as f:
+        configs = json.load(f)
+
+    return configs
+    
+
+def hash_env(cur_pos, width):
+    return cur_pos[0] * width + cur_pos[1]
