@@ -2,15 +2,15 @@
     "base_save_dir": "results/semi_grad_sarsa",
     "base_seed": 42,
     "device": "cpu",
-    "total_steps": 50,
-    "env_name": "MiniGrid-Empty-6x6-v0",
+    "total_steps": 50000,
+    "env_name": "MiniGrid-Empty-Random-6x6-v0",
     "flat_obs": true,
     "normalize_reward": false,
     "penalize_death": false,
     "mx_reward": 1.0,
     "gamma": 0.9,
     "eps": 0.1,
-    "n_seeds": 3,
-    "verbose": 0,
-    "lr": [0.001, 0.0001]
+    "n_seeds": 1,
+    "verbose": 100,
+    "lr": [0.001]
 }

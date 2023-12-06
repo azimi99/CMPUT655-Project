@@ -110,6 +110,14 @@ class TabularObservation(gym.ObservationWrapper):
         unwrapped = self.unwrapped
         return unwrapped.agent_pos
     
+class AmplifyReward(gym.RewardWrapper):
+    def __init__(self, env: Env, c: float = 1.):
+        super().__init__(env)
+        self.c = c
+
+    def reward(self, reward: float) -> float:
+        return reward * self.c
+    
 class NegativeRewardOnLava(gym.RewardWrapper):
     def __init__(self, env: Env, custom_reward: float = -1.):
         super().__init__(env)

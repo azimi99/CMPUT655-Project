@@ -37,3 +37,5 @@ def read_config(path):
 
 def hash_env(cur_pos, width):
     return cur_pos[0] * width + cur_pos[1]
+
+

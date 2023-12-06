@@ -34,6 +34,7 @@ def run_single_config(config, save_dir):
                 flat_obs=config["flat_obs"],
                 normalize_reward=config["normalize_reward"],
                 penalize_death=config["penalize_death"],
+                reward_amplification=config["reward_amplification"],
                 mx_reward=config["mx_reward"],
                 gamma=config["gamma"],
                 )
@@ -114,7 +115,7 @@ def run_single_config(config, save_dir):
             timestep_count += 1
         
         if config["verbose"] > 0 and ep_count % config["verbose"] == 0:
-            print(f"Episode {ep_count} is done in {timestep_count - prev_count} steps, {time.time() - st_time} secs")
+            print(f"Episode {ep_count} is done in {timestep_count - prev_count} steps, {time.time() - st_time:.2f} secs")
         ep_count += 1
 
         if timestep_count >= config["total_steps"]:
@@ -147,13 +148,22 @@ if __name__ == "__main__":
     # Prepare the combinations of sweeping variables
     # NOTE: CUSTOMIZE THE OUTER LOOP AND FOLDER CREATION PROCESS DEPENDING ON THE SWEEPING VARIABLES
     lrs = copy.deepcopy(config["lr"])
+    run_cnt = 1
+    run_start_time = time.time()
     for lr in lrs:
         for seed in seeds_for_sweep:
             # Overwrite the config
             config["lr"] = lr
             config["seed"] = seed
 
-            save_dir = base_dir + f"/lr_{lr}_seed_{seed}"       # CHANGE THIS ACCORDING TO YOUR SWEEP VARIABLES
+            save_dir = base_dir + f"/lr_{lr}_seed_{seed}"       # CHANGE THIS ACCORDING TO YOUR SWEEPING VARIABLES
             if not os.path.isdir(save_dir):
                 os.mkdir(save_dir)
+
+            # Start timer
             run_single_config(config, save_dir)
+            runtime = time.time() - run_start_time
+            
+    mins = int(runtime) // 60
+    secs = runtime - (mins * 60)
+    print(f"Run {run_cnt} : {mins} mins {secs:.2f} secs")

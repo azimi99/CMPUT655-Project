@@ -308,3 +308,5 @@ TSWLatexianTemp*
 # Additional python related files/folders
 __pycache__/
 .ipynb_checkpoints/
+results/
+imgs/
