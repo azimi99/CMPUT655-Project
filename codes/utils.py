@@ -6,8 +6,8 @@ import random
 import numpy as np
 import torch
 
-from .envs import produce_all_observations
-from .envs.custom_minigrid_wrappers import CustomMinigridEnv
+# from .envs import produce_all_observations
+# from .envs.custom_minigrid_wrappers import CustomMinigridEnv
 
 
 def seed_everything(seed: int = 42):

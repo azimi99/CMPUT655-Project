@@ -1,17 +1,17 @@
 {
-    "base_save_dir": "results/semi_grad_sarsa_without_eps_amplify",
+    "base_save_dir": "results/semi_grad_sarsa_without_eps_rand_6x6",
     "base_seed": 42,
     "device": "cpu",
     "total_steps": 10000,
     "env_name": "MiniGrid-Empty-Random-6x6-v0",
     "flat_obs": true,
     "normalize_reward": false,
-    "reward_amplification": 10.0,
+    "reward_amplification": 1.0,
     "penalize_death": false,
     "mx_reward": 1.0,
     "gamma": 0.9,
     "eps": 0,
-    "n_seeds": 5,
-    "verbose": 1000,
-    "lr": [0.001, 0.0001]
+    "n_seeds": 10,
+    "verbose": 100,
+    "lr": [0.001, 0.01]
 }

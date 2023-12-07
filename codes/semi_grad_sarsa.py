@@ -13,6 +13,33 @@ from metrics import Measurements
 from utils import seed_everything, read_config, hash_env
 
 
+class Agent():
+    def __init__(self, q_net, lr, gamma, epsilon=0):
+        self.q_net = q_net
+        self.gamma = gamma
+        self.epsilon = epsilon
+        self.optimizer = optim.Adam(self.q_net.parameters(), lr=lr)
+
+    def get_action(self, state):
+        if np.random.rand() < self.epsilon:
+            return np.random.randint(0, 4)
+        
+        with torch.no_grad():
+            qa = self.q_net(state)
+
+        action = qa.detach().cpu().argmax().item()
+        return action
+    
+    def update(self, state, action, reward, next_state, next_action, terminal):
+        target = reward + self.gamma * self.q_net(next_state)[next_action].detach() * (1-terminal)
+        q = self.q_net(state)[action]
+        loss = 1/2 * torch.square(target - q)
+
+        self.optimizer.zero_grad()
+        loss.backward()
+        self.optimizer.step()
+
+
 def parse_arguments():
     arg_parser = argparse.ArgumentParser()
 
@@ -21,6 +48,12 @@ def parse_arguments():
     args = arg_parser.parse_args()
     
     return args
+
+
+def format_observation(obs):
+    obs = obs.reshape((-1, 3))[:, 0].astype(np.float32)
+    obs /= obs.max()
+    return obs
 
 
 def run_single_config(config, save_dir):
@@ -48,7 +81,7 @@ def run_single_config(config, save_dir):
         nn.ReLU(),
         nn.Linear(100, 4)
     )
-    optimizer = optim.Adam(q_function.parameters(), lr=config["lr"])
+    agent = Agent(q_function, config["lr"], config["gamma"], config["eps"])
 
     # Training algorithm
     timestep_count = 0
@@ -58,61 +91,35 @@ def run_single_config(config, save_dir):
         # Initialize state
         obs, _ = env.reset(seed=config["seed"])
         cur_pos = env.base_env.unwrapped.agent_pos
-        obs = obs.reshape((-1, 3))[:, 0].astype(np.float32)
-        obs /= obs.max()
+        obs = format_observation(obs)
         obs = torch.Tensor(obs).to(config["device"])
         
         # Take action based on the current q_function
-        with torch.no_grad():
-            # actions.append(q_function(obs))
-            if np.random.rand() < config["eps"]:
-                action = np.random.randint(0, 4)
-            else:
-                action = q_function(obs).argmax().item()
-            
+        action = agent.get_action(obs)
+
         is_done = False
         st_time = time.time()
         prev_count = timestep_count
-        r = 0
         while not is_done:
             # Step environment
             nxt_obs, reward, term, trunc, _ = env.step(action)
-            nxt_obs = nxt_obs.reshape((-1, 3))[:, 0].astype(np.float32)
-            nxt_obs /= nxt_obs.max()
+            nxt_obs = format_observation(nxt_obs)
             nxt_obs = torch.Tensor(nxt_obs).to(config["device"])
 
             # Update flag for the termination
             is_done = term or trunc
-            r += reward
-            if term:
-                print(reward)
 
-            nxt_action = None
-            with torch.no_grad():
-                # Compute base delta
-                q_val = q_function(obs)[action]
-                delta = reward - q_val
-                
-                if not is_done:
-                    # Will follow the greedy policy
-                    if np.random.rand() < config["eps"]:
-                        nxt_action = np.random.randint(0, 4)
-                    else:
-                        q_pred_nxt = q_function(nxt_obs)
-                        nxt_action = q_pred_nxt.argmax().item()
-                    delta += config["gamma"] * q_pred_nxt[nxt_action]
-                
-            # Update weights
-            loss = -delta * q_function(obs)[action]
-            optimizer.zero_grad()
-            loss.backward()
-            optimizer.step()
-            
+            # Get action and update the model
+            nxt_action = agent.get_action(nxt_obs)
+            agent.update(obs, action, reward, nxt_obs, nxt_action, is_done)
+
+            # Store measurements
             measurements.add_measurements(hash_env(cur_pos, width),
                                           action,
                                           reward,
                                           timestep_count if is_done else None)
 
+            # Update trackers
             obs = nxt_obs
             cur_pos = env.base_env.unwrapped.agent_pos
             action = nxt_action

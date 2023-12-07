@@ -32,5 +32,5 @@ def plot_all_rewards(base_dir, parameters, save_path):
 
 
 if __name__ == "__main__":
-    res = plot_all_rewards("../../results/semi_grad_sarsa_without_eps_const/", {"lr": 0.001}, "../../imgs/semigrad_sarsa_without_eps_rewards_nochange.png")
+    res = plot_all_rewards("../../results/semi_grad_sarsa_without_eps_rand_6x6/", {"lr": 0.001}, "../../imgs/semigrad_sarsa_without_eps_rewards_5x5.png")
     
